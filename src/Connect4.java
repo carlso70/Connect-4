@@ -13,9 +13,11 @@ public class Connect4 {
 	 */
 	public Connect4() {
         board = new char[6][7];
+
         for (int i = 0; i < board.length; i++)
             for (int j = 0; j < board[0].length; j++)
                 board[i][j] = NONE;
+
 	}
 
        /**
@@ -25,7 +27,7 @@ public class Connect4 {
 	public char[][] getBoard() {
 		char [][] boardCopy = new char[board.length][board[0].length];
 		for (int i = 0; i < board.length; i++)
-			for (int j = 0; j < board[j].length; j++)
+			for (int j = 0; j < board[0].length; j++)
 				boardCopy[i][j] = board[i][j];
 		return boardCopy;
 	}
@@ -90,13 +92,45 @@ public class Connect4 {
 	 */
 	public char checkAlignment(int row, int column) {
 		char winner = NONE;
+		int count = 0;
 
-		for (int i = 0; i < board.length; i++) { //Checks Horizontal
-			for (int j = 0; j < board[j].length - 3; j++) {
-				if (board[i][j] == board[i][j + 1] && board[i][j + 1] == board[i][j + 2] && board[i][j + 2] == board[i][j + 3])
-					winner = board[i][j];
+		for (int i = 0; i < board[0].length - 1; i++) { //checks horizontal
+			if (board[row][column] == board[row][i+1])
+				count++;
+			else {
+				count = 0;
+			}
+			if (count >= 3) {
+				return board[row][column];
+			}
+
+		}
+
+		for (int j = 0; j < board.length - 1; j++) { //checks vertically
+			if(board[row][column] == board[j + 1][column]) {
+				count++;
+			}
+			else {
+				count = 0;
+			}
+			if (count >= 3) {
+				return board[row][column];
 			}
 		}
+
+		int sum = row + column;
+
+
+		for (int i = 0; i < board[0].length - 1 && i < board.length - 1; i++)
+			if (board[row][column] == board[sum - i][i]) {
+				count++;
+			}
+			else {
+				count = 0;
+			}
+			if (count >= 4) {
+				return board[row][column];
+			}
 
 		return winner;
 
