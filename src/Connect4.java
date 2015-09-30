@@ -94,35 +94,21 @@ public class Connect4 {
 		char winner = NONE;
 		int count = 0;
 
-		for (int i = 0; i < board[0].length - 1; i++) { //checks horizontal
-			if (board[row][column] == board[row][i+1])
+		for (int i = 0; i < board[0].length; i++) { //checks horizontal
+			if (board[row][column] == board[row][i])
 				count++;
 			else {
 				count = 0;
 			}
-			if (count >= 3) {
+			if (count >= 4) {
 				return board[row][column];
 			}
 
 		}
 
-		for (int j = 0; j < board.length - 1; j++) { //checks vertically
-			if(board[row][column] == board[j + 1][column]) {
-				count++;
-			}
-			else {
-				count = 0;
-			}
-			if (count >= 3) {
-				return board[row][column];
-			}
-		}
-
-		int sum = row + column;
-
-
-		for (int i = 0; i < board[0].length - 1 && i < board.length - 1; i++)
-			if (board[row][column] == board[sum - i][i]) {
+                count = 0;
+		for (int j = 0; j < board.length; j++) { //checks vertically
+			if(board[row][column] == board[j][column]) {
 				count++;
 			}
 			else {
@@ -131,8 +117,53 @@ public class Connect4 {
 			if (count >= 4) {
 				return board[row][column];
 			}
+		}
 
-		return winner;
+		count = 1;
+		for (int i = row+1, j = column+1; j < board[0].length && i < board.length; i++, j++) {
+			if (board[row][column] == board[i][j]) {
+				count++;
+			}
+			else {
+				break;
+			}
+			if (count >= 4) {
+				return board[row][column];
+			}
+                }
+                for (int i = row-1, j = column-1; i >= 0 && j >= 0; j--, i--) {
+                        if (board[row][column] == board[i][j]) {
+				count++;
+			} else {
+ 				break;
+			}
+			if (count >= 4) {
+				return board[row][column];
+ 			}
+		}
+	
+		count = 1;
+		for (int i = row-1, j = column+1; j < board[0].length && i >= 0; i--, j++) {
+			if (board[row][column] == board[i][j]) {
+				count++;
+			}
+			else {
+				break;
+			}
+			if (count >= 4) {
+				return board[row][column];
+			}
+                }
+                for (int i = row+1, j = column-1; i < board.length  && j >= 0; i++, j--) {
+                        if (board[row][column] == board[i][j]) {
+				count++;
+			} else {
+ 				break;
+			}
+			if (count >= 4) {
+				return board[row][column];
+ 			}
+		}	return NONE;
 
 
 	}
@@ -160,14 +191,11 @@ public class Connect4 {
 			do {
 				System.out.printf("Choose a column: ");
 				String line = in.nextLine();
-				
-
-				if (line == null || line.length() != 1) {
-                                        // Invalid input, reask for one.
+				try {
+					col = Integer.parseInt(line);
+				} catch (Exception e) {
 					continue;
 				}
-
-				col = line.charAt(0) - '0';
 				row = this.putPiece(col, currentPlayer);
 
 			} while (row < 0);
